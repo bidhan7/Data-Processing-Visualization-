@@ -1,0 +1,64 @@
+---
+title: "IRIS Dataset"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(tidyverse)
+```
+
+## Bidhan Subedi
+## 1/14/2022
+
+Gather iris dataset and load it!
+
+```{r}
+df <- read.csv('https://raw.githubusercontent.com/nurfnick/Data_Viz/main/iris.csv')
+cols <- c('SepalLength','SepalWidth','PedalLength','PedalWidth','Class')
+colnames(df) <- cols
+df %>% head
+```
+```{r}
+df <- df %>% mutate(Class = as.factor(Class))
+```
+## Boxplot of the categorical variable Class
+```{r}
+boxplot(df$Class)
+```
+##  Some Other Visiualization
+
+```{r}
+hist(df$PedalLength)
+```
+
+```{r}
+boxplot(df$PedalLength)
+```
+```{r}
+ggplot(df, aes(x=Class, y=PedalLength)) + 
+  geom_violin(trim=FALSE)
+```
+
+On to the stats. I will compute statistics of PedalLength.
+```{r}
+summary(df$PedalLength)
+```
+
+I should include a mean and standard deviation
+```{r}
+mean(df$PedalLength)
+```
+
+```{r}
+sd(df$PedalLength)
+```
+
+The dplyr package is awesome for combining different things.
+
+```{r}
+df %>% 
+  group_by(Class) %>%
+  summarise(PedalLength = mean(PedalLength), SepalLength = mean(SepalLength))
+```
